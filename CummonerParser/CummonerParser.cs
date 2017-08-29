@@ -47,7 +47,7 @@ namespace CummonerParser
 
         private void SaveChapter(Chapter chapter)
         {
-            var di = new DirectoryInfo(Path.Combine(_currentPath, chapter.ChapterName.EscapePath()));
+            var di = new DirectoryInfo(Path.Combine(_currentPath, "The Cummoner", chapter.ChapterName.EscapePath()));
 
             if (!di.Exists)
             {
