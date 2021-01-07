@@ -4,8 +4,8 @@ namespace CummonerParser
 {
     internal class Chapter
     {
-        public string ChapterName { get; set; }
+        public string ChapterName { get; init; }
 
-        public List<Page> Pages { get; set; }
+        public List<Page> Pages { get; init; }
     }
 }

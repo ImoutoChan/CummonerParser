@@ -2,19 +2,19 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using AngleSharp.Parser.Html;
+using AngleSharp.Html.Parser;
 
 namespace CummonerParser
 {
     internal class CummonerParser
     {
-        private readonly string _sourceUrl = "http://www.totempole666.com/archives-2/";
+        private const string SourceUrl = "http://www.totempole666.com/archives-2/";
         private readonly string _currentPath = AppContext.BaseDirectory;
 
 
         public void ParseCummoner()
         {
-            var html = HtmlHelper.LoadHtml(_sourceUrl);
+            var html = HtmlHelper.LoadHtml(SourceUrl);
             var chapters = GetChapters(html).ToList();
             
             var chapterCounter = 1;
@@ -26,10 +26,10 @@ namespace CummonerParser
             }
         }
 
-        private IEnumerable<Chapter> GetChapters(string html)
+        private static IEnumerable<Chapter> GetChapters(string html)
         {
             var parser = new HtmlParser();
-            var document = parser.Parse(html);
+            var document = parser.ParseDocument(html);
 
             foreach (var chapterElement in document.QuerySelectorAll(".comic-archive-chapter-wrap"))
             {
@@ -64,7 +64,7 @@ namespace CummonerParser
             }
         }
 
-        private bool SavePage(Page chapterPage, DirectoryInfo chapterDirectory)
+        private static bool SavePage(Page chapterPage, DirectoryInfo chapterDirectory)
         {
             var image = HtmlHelper.DownloadFile(chapterPage.GetImageUrl());
 
@@ -73,11 +73,10 @@ namespace CummonerParser
             if (File.Exists(fileName))
                 return false;
 
-            using (var fs = new FileStream(fileName, FileMode.Create))
-            using (var bw = new BinaryWriter(fs))
-            {
-                bw.Write(image);
-            }
+            using var fs = new FileStream(fileName, FileMode.Create);
+            using var bw = new BinaryWriter(fs);
+
+            bw.Write(image);
             return true;
         }
     }

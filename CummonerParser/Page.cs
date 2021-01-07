@@ -1,19 +1,19 @@
 using System;
-using AngleSharp.Parser.Html;
+using AngleSharp.Html.Parser;
 
 namespace CummonerParser
 {
     internal class Page
     {
-        public string Name { get; set; }
+        public string Name { get; init; }
 
-        public string Url { get; set; }
+        public string Url { get; init; }
 
         public string GetImageUrl()
         {
             var html = HtmlHelper.LoadHtml(Url);
             var parser = new HtmlParser();
-            var document = parser.Parse(html);
+            var document = parser.ParseDocument(html);
 
             try
             {
